@@ -16,5 +16,5 @@ def getArticle(url):
 
 
 # Testing
-article = getArticle("https://www.thedailystar.com/news/local_news/otego-woman-dies-in-crash/article_944d784a-39a6-11ed-8602-2b7ef4267e87.html")
+article = getArticle("https://www.thedailystar.com/news/state/alzheimers-drug-shows-promise-in-early-results-of-study/article_5eaa4262-7fe2-592c-9c08-bd04dbc87ed3.html")
 print(article)
