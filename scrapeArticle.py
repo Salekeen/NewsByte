@@ -2,7 +2,7 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
-def getArticle(url):
+def get_article(url):
     article = ""
     html = urlopen(url)
     bs = BeautifulSoup(html,'html.parser')
@@ -16,5 +16,5 @@ def getArticle(url):
 
 
 # Testing
-article = getArticle("https://www.thedailystar.com/news/state/alzheimers-drug-shows-promise-in-early-results-of-study/article_5eaa4262-7fe2-592c-9c08-bd04dbc87ed3.html")
-print(article)
+# article = get_article("https://www.thedailystar.com/news/state/alzheimers-drug-shows-promise-in-early-results-of-study/article_5eaa4262-7fe2-592c-9c08-bd04dbc87ed3.html")
+# print(article)
