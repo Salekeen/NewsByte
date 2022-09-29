@@ -6,5 +6,3 @@ The basic structure of daily star front page
     - card-headline: headline, url of the full news
     - card-meta: writer and date
     - card-lead: first few lines of the main article
-
-

@@ -16,5 +16,5 @@ def get_article(url):
 
 
 # Testing
-# article = get_article("https://www.thedailystar.com/news/state/alzheimers-drug-shows-promise-in-early-results-of-study/article_5eaa4262-7fe2-592c-9c08-bd04dbc87ed3.html")
+# article = get_article("https://www.thedailystar.net/news/local_news/george-takei-to-speak-at-suny-oneonta/article_c0c035f4-3b7a-11ed-bf2b-3fcfde3d01ad.html")
 # print(article)

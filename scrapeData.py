@@ -34,14 +34,17 @@ for card in card_body:
 
 
 # writing data to a CSV file
-filename = "./Daily Data/{}.csv".format(datetime.now().strftime("%Y_%m_%d"))
+# filename = "./Daily Data/{}.csv".format(datetime.now().strftime("%Y_%m_%d"))
+filename = "./Daily Data/test.csv"
 
 with open (filename, 'w') as file:
     csv_writer = csv.writer(file)
+    csv_writer.writerow(["News Type","Headlines","URLS","Article"])
     for index in range(len(card_labels)-1):
         content = []
 
         content.append(news_type[index])
         content.append(headlines[index])
         content.append(urls[index])
+
         csv_writer.writerow(content)
