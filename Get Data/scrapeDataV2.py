@@ -13,6 +13,8 @@ table_data = bs.find_all('tr')
 for data in table_data:
     all_news.add(data.find('a')['href'])
 
+print(all_news)
+
 
 # Finding all the front page urls
 front_page_urls = set()
@@ -25,6 +27,7 @@ for link in bs.findAll('a'):
 
 
 front_page_urls = list(front_page_urls)
+all_news_urls = list(all_news)
 
 # writing data to a CSV file
 filename = "./Get Data/Daily Data/{}.csv".format(
@@ -33,11 +36,11 @@ filename = "./Get Data/Daily Data/{}.csv".format(
 with open(filename, 'w+') as file:
     csv_writer = csv.writer(file)
     csv_writer.writerow(["URLS", "Headline", "Article"])
-    for index in range(len(front_page_urls)-1):
+    for index in range(len(all_news_urls)-1):
         content = []
-        content.append(front_page_urls[index])
+        content.append(all_news_urls[index])
         article, headline = get_data(
-            "https://www.thedailystar.net{}".format(front_page_urls[index])
+            "https://www.thedailystar.net{}".format(all_news_urls[index])
         )
         content.append(headline)
         content.append(article)
