@@ -1,7 +1,7 @@
 # importing dependencies
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-from scrapeArticle import get_article
+from scrapeArticle import get_data
 import csv
 from datetime import datetime
 
@@ -27,18 +27,19 @@ for link in bs.findAll('a'):
 front_page_urls = list(front_page_urls)
 
 # writing data to a CSV file
-filename = "./Get Data/Daily Data/front-page-urls-{}.csv".format(
+filename = "./Get Data/Daily Data/{}.csv".format(
     datetime.now().strftime("%Y_%m_%d"))
-
 
 with open(filename, 'w+') as file:
     csv_writer = csv.writer(file)
-    csv_writer.writerow(["URLS","Article"])
+    csv_writer.writerow(["URLS","Headline","Article"])
     for index in range(len(front_page_urls)-1):
         content = []
         content.append(front_page_urls[index])
-        article = get_article(
+        article,headline = get_data(
             "https://www.thedailystar.net{}".format(front_page_urls[index])
         )
+        content.append(headline)
         content.append(article)
+
         csv_writer.writerow(content)

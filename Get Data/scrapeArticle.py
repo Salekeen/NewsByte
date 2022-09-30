@@ -2,7 +2,7 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
-def get_article(url):
+def get_data(url):
     article = ""
     html = urlopen(url)
     bs = BeautifulSoup(html,'html.parser')
@@ -11,6 +11,8 @@ def get_article(url):
 
     for paragraph in paragraphs:
         article+=paragraph.get_text()
-    return article
 
+    
+    headline = article_body.find('h1',{'itemprop':'headline'})
+    return article,headline
 
