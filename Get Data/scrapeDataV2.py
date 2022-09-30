@@ -48,10 +48,10 @@ def write_to_csv(url,filename):
 # writing data to a CSV file
 filename_all_news = "./Get Data/Daily Data/all_news_{}.csv".format(
     datetime.now().strftime("%Y_%m_%d"))
-# filename_top_news = "./Get Data/Daily Data/top_news_{}.csv".format(
-#     datetime.now().strftime("%Y_%m_%d"))
+# # filename_top_news = "./Get Data/Daily Data/top_news_{}.csv".format(
+# #     datetime.now().strftime("%Y_%m_%d"))
 
 write_to_csv(all_news_urls,filename_all_news)
-# write_to_csv(top_news_urls,filename_top_news)
+# # write_to_csv(top_news_urls,filename_top_news)
 
 
