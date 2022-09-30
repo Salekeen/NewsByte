@@ -34,8 +34,8 @@ for card in card_body:
 
 
 # writing data to a CSV file
-# filename = "./Daily Data/{}.csv".format(datetime.now().strftime("%Y_%m_%d"))
-filename = "./Daily Data/test.csv"
+filename = "./Daily Data/{}.csv".format(datetime.now().strftime("%Y_%m_%d"))
+
 
 with open (filename, 'w') as file:
     csv_writer = csv.writer(file)
