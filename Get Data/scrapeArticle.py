@@ -6,7 +6,7 @@ def get_article(url):
     article = ""
     html = urlopen(url)
     bs = BeautifulSoup(html,'html.parser')
-    article_body = bs.find('div',{'id':'article-body'})
+    article_body = bs.find('article')
     paragraphs = article_body.find_all('p')
 
     for paragraph in paragraphs:
@@ -15,6 +15,5 @@ def get_article(url):
 
 
 
-# Testing
-# article = get_article("https://www.thedailystar.net/news/local_news/george-takei-to-speak-at-suny-oneonta/article_c0c035f4-3b7a-11ed-bf2b-3fcfde3d01ad.html")
-# print(article)
+article = get_article("https://www.thedailystar.net/news/bangladesh/news/loadshedding-the-relief-assured-yet-materialise-3131366")
+print(article)

@@ -23,6 +23,9 @@ for link in bs.findAll('a'):
         if link.attrs['href'] in all_news:
             front_page_urls.add(link.attrs['href'])
 
+
+front_page_urls = list(front_page_urls)
+
 # writing data to a CSV file
 filename = "./Daily Data/front-page-urls-{}.csv".format(
     datetime.now().strftime("%Y_%m_%d"))
@@ -30,7 +33,12 @@ filename = "./Daily Data/front-page-urls-{}.csv".format(
 
 with open(filename, 'w') as file:
     csv_writer = csv.writer(file)
-    csv_writer.writerow(["URLS"])
-    # csv_writer.writerow(front_page_urls)
-    for url in front_page_urls:
-        csv_writer.writerow([url])
+    csv_writer.writerow(["URLS","Article"])
+    for index in range(len(front_page_urls)-1):
+        content = []
+        content.append(front_page_urls[index])
+        article = get_article(
+            "https://www.thedailystar.net{}".format(front_page_urls[index])
+        )
+        content.append(article)
+        csv_writer.writerow(content)
