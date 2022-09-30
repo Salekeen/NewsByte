@@ -14,6 +14,3 @@ def get_article(url):
     return article
 
 
-
-article = get_article("https://www.thedailystar.net/news/bangladesh/news/loadshedding-the-relief-assured-yet-materialise-3131366")
-print(article)

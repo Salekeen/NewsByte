@@ -27,11 +27,11 @@ for link in bs.findAll('a'):
 front_page_urls = list(front_page_urls)
 
 # writing data to a CSV file
-filename = "./Daily Data/front-page-urls-{}.csv".format(
+filename = "./Get Data/Daily Data/front-page-urls-{}.csv".format(
     datetime.now().strftime("%Y_%m_%d"))
 
 
-with open(filename, 'w') as file:
+with open(filename, 'w+') as file:
     csv_writer = csv.writer(file)
     csv_writer.writerow(["URLS","Article"])
     for index in range(len(front_page_urls)-1):
