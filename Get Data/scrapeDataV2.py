@@ -32,11 +32,11 @@ filename = "./Get Data/Daily Data/{}.csv".format(
 
 with open(filename, 'w+') as file:
     csv_writer = csv.writer(file)
-    csv_writer.writerow(["URLS","Headline","Article"])
+    csv_writer.writerow(["URLS", "Headline", "Article"])
     for index in range(len(front_page_urls)-1):
         content = []
         content.append(front_page_urls[index])
-        article,headline = get_data(
+        article, headline = get_data(
             "https://www.thedailystar.net{}".format(front_page_urls[index])
         )
         content.append(headline)
