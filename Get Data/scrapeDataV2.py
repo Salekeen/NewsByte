@@ -25,7 +25,7 @@ for link in bs.findAll('a'):
             top_news_urls.add(link.attrs['href'])
 
 
-# top_news_urls = list(top_news_urls)
+top_news_urls = list(top_news_urls)
 all_news_urls = list(all_news_urls)
 
 
@@ -51,7 +51,8 @@ filename_all_news = "./Get Data/Daily Data/all_news_{}.csv".format(
 filename_top_news = "./Get Data/Daily Data/top_news_{}.csv".format(
     datetime.now().strftime("%Y_%m_%d"))
 
-write_to_csv(all_news_urls,filename_all_news)
 write_to_csv(top_news_urls,filename_top_news)
+write_to_csv(all_news_urls,filename_all_news)
+
 
 
