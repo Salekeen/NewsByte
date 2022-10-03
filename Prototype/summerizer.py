@@ -7,7 +7,7 @@ from sumy.nlp.stemmers import Stemmer
 
 # Fetching the data from CSV
 data = pd.read_csv(
-    "../Get Data/Daily Data/top_news_2022_10_03.csv",
+    "./Get Data/Daily Data/top_news_2022_10_03.csv",
     encoding="cp1252"
 )
 articles = data['Article']
@@ -21,4 +21,6 @@ summerizer = Summarizer(stemmer)
 
 for article in articles:
     parser = PlaintextParser.from_string(article,Tokenizer("english"))
+
+print("This is fine")
     
