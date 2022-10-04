@@ -31,7 +31,7 @@ all_news_urls = list(all_news_urls)
 
 def write_to_csv(url,filename):
     
-    with open(filename, 'w+') as file:
+    with open(filename, 'w+', newline='') as file:
         csv_writer = csv.writer(file)
         csv_writer.writerow(["URLS", "Headline", "Article"])
         for index in range(len(url)-1):

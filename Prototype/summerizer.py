@@ -23,7 +23,7 @@ summerizer = Summarizer(stemmer)
 
 def write_to_csv(filename, content):
     
-    with open(filename, 'a') as file:
+    with open(filename, 'a', newline='') as file:
         csv_writer = csv.writer(file)
         # csv_writer.writerow(["Headline", "Summary"])
         
