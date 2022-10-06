@@ -1,3 +1,6 @@
+"""allows to get all the article urls of top news section of daily star
+"""
+
 # importing dependencies
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
@@ -6,8 +9,14 @@ import csv
 from datetime import datetime
 
 
-# todays all news
 def get_all_news_urls():
+    """returns all news articles urls of the current day
+    
+    Returns
+    -------
+    set
+        a set of all news artcles of the current day
+    """
 
     html = urlopen('https://www.thedailystar.net/todays-news')
     bs = BeautifulSoup(html, 'html.parser')
@@ -18,8 +27,19 @@ def get_all_news_urls():
     return all_news_urls
 
 
-# Finding all the top news page urls
 def get_top_news_urls(all_news_urls):
+    """returns all top news articles urls of the current day
+    
+    Parameters
+    ----------
+    all_news_urls : list
+        collection of all news articles urls of current day
+
+    Returns
+    -------
+    set
+        a set of all news artcles of the current day
+    """
 
     top_news_urls = set()
     html = urlopen('https://www.thedailystar.net/top-news')
@@ -32,6 +52,15 @@ def get_top_news_urls(all_news_urls):
 
 
 def write_to_csv(url, filename):
+    """Writes data to a CSV file
+
+    Parameters
+    ----------
+    url : str
+        url of the news article
+    filename : str
+        dirname of where to save the file
+    """
 
     with open(filename, 'w+', newline='') as file:
         csv_writer = csv.writer(file)
@@ -49,6 +78,9 @@ def write_to_csv(url, filename):
 
 
 def main():
+    """main function of the script
+    """
+    
     all_news_urls = list(get_all_news_urls())
     top_news_urls = list(get_top_news_urls(all_news_urls))
     filename_top_news = "./Get Data/Daily Data/top_news_{}.csv".format(
