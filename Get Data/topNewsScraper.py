@@ -62,7 +62,7 @@ def write_to_csv(url, filename):
         dirname of where to save the file
     """
 
-    with open(filename, 'w+', newline='') as file:
+    with open(filename, 'w+', newline='',encoding="utf-8") as file:
         csv_writer = csv.writer(file)
         csv_writer.writerow(["URLS", "Headline", "Article"])
         for index in range(len(url)-1):
