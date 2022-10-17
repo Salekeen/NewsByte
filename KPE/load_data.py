@@ -2,7 +2,7 @@ import pandas as pd
 from pathlib import Path
 
 
-path = Path("../Get Data/Data/all_news")
+path = Path("./Get Data/Data/all_news")
 
 
 def get_df():
