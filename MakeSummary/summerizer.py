@@ -8,7 +8,7 @@ from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.stemmers import Stemmer
 import csv
 
-input_filename = "./Get Data/Data/top_news/top_news_2022_10_05.csv"
+input_filename = "./Scraper/Data/top_news/top_news_2022_10_05.csv"
 output_filename = "./MakeSummary/Daily Summary/top_news_summary_2022_10_05.csv"
 
 
