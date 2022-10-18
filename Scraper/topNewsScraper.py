@@ -7,8 +7,12 @@ from bs4 import BeautifulSoup
 from getData import get_data
 import csv
 from datetime import datetime
+from prefect import task,flow
 
-
+@task(
+    retries=2,
+    retry_delay_seconds=60
+)
 def get_all_news_urls():
     """returns all news articles urls of the current day
     
@@ -26,7 +30,10 @@ def get_all_news_urls():
         all_news_urls.add(data.find('a')['href'])
     return all_news_urls
 
-
+@task(
+    retries=2,
+    retry_delay_seconds=60
+) 
 def get_top_news_urls(all_news_urls):
     """returns all top news articles urls of the current day
     
@@ -50,7 +57,10 @@ def get_top_news_urls(all_news_urls):
                 top_news_urls.add(link.attrs['href'])
     return top_news_urls
 
-
+@task(
+    retries=2,
+    retry_delay_seconds=60
+)
 def write_to_csv(url, filename):
     """Writes data to a CSV file
 
@@ -76,11 +86,11 @@ def write_to_csv(url, filename):
 
             csv_writer.writerow(content)
 
+@flow(
+    name="Top News Scraper"
+)
+def top_news_scraper_flow():
 
-def main():
-    """main function of the script
-    """
-    
     all_news_urls = list(get_all_news_urls())
     top_news_urls = list(get_top_news_urls(all_news_urls))
     filename_top_news = "./Scraper/Data/top_news/top_news_{}.csv".format(
@@ -88,5 +98,6 @@ def main():
     write_to_csv(top_news_urls, filename_top_news)
 
 
+
 if __name__ == '__main__':
-    main()
+    top_news_scraper_flow()

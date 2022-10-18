@@ -7,8 +7,13 @@ from bs4 import BeautifulSoup
 from getData import get_data
 import csv
 from datetime import datetime
+from prefect import task, flow
 
 
+@task(
+    retries=2,
+    retry_delay_seconds=60
+)
 def get_all_news_urls():
     """returns all news articles urls of the current day
     
@@ -27,7 +32,10 @@ def get_all_news_urls():
     return all_news_urls
 
 
-
+@task(
+    retries=2,
+    retry_delay_seconds=60
+)
 def write_to_csv(url, filename):
     """Writes data to a CSV file
 
@@ -54,10 +62,10 @@ def write_to_csv(url, filename):
             csv_writer.writerow(content)
 
 
-def main():
-    """main function of the script
-    """
-    
+@flow(
+    name="All News Scraper"
+)
+def all_news_scraper_flow():
     all_news_urls = list(get_all_news_urls())
     filename_all_news = "./Scraper/Data/all_news/all_news_{}.csv".format(
         datetime.now().strftime("%Y_%m_%d"))
@@ -65,4 +73,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    all_news_scraper_flow()
