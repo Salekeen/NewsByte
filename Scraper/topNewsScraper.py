@@ -6,8 +6,12 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from getData import get_data
 import csv
-from datetime import datetime
-from prefect import task,flow
+from datetime import datetime, timedelta
+from prefect import task, flow
+from prefect.deployments import Deployment
+from prefect.orion.schemas.schedules import CronSchedule
+from prefect.infrastructure import Process
+
 
 @task(
     retries=2,
@@ -30,10 +34,11 @@ def get_all_news_urls():
         all_news_urls.add(data.find('a')['href'])
     return all_news_urls
 
+
 @task(
     retries=2,
     retry_delay_seconds=60
-) 
+)
 def get_top_news_urls(all_news_urls):
     """returns all top news articles urls of the current day
     
@@ -57,6 +62,7 @@ def get_top_news_urls(all_news_urls):
                 top_news_urls.add(link.attrs['href'])
     return top_news_urls
 
+
 @task(
     retries=2,
     retry_delay_seconds=60
@@ -72,7 +78,7 @@ def write_to_csv(url, filename):
         dirname of where to save the file
     """
 
-    with open(filename, 'w+', newline='',encoding="utf-8") as file:
+    with open(filename, 'w+', newline='', encoding="utf-8") as file:
         csv_writer = csv.writer(file)
         csv_writer.writerow(["URLS", "Headline", "Article"])
         for index in range(len(url)-1):
@@ -86,6 +92,7 @@ def write_to_csv(url, filename):
 
             csv_writer.writerow(content)
 
+
 @flow(
     name="Top News Scraper"
 )
@@ -98,6 +105,13 @@ def top_news_scraper_flow():
     write_to_csv(top_news_urls, filename_top_news)
 
 
+# Defining the Deployment Spec
+deployment = Deployment.build_from_flow(
+    flow=top_news_scraper_flow,
+    name="top_news_scraper",
+    schedule=(CronSchedule(cron="*/5 * * * *", timezone="Asia/Dacca")),
+    work_queue_name="scraper",
+    infrastructure=Process()
+)
 
-if __name__ == '__main__':
-    top_news_scraper_flow()
+deployment.apply()
