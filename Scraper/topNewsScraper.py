@@ -2,15 +2,14 @@
 """
 
 # importing dependencies
+from prefect.infrastructure.process import Process
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from getData import get_data
 import csv
 from datetime import datetime, timedelta
 from prefect import task, flow
-from prefect.deployments import Deployment
 from prefect.orion.schemas.schedules import CronSchedule
-from prefect.infrastructure import Process
 
 
 @task(
@@ -105,13 +104,5 @@ def top_news_scraper_flow():
     write_to_csv(top_news_urls, filename_top_news)
 
 
-# Defining the Deployment Spec
-deployment = Deployment.build_from_flow(
-    flow=top_news_scraper_flow,
-    name="top_news_scraper",
-    schedule=(CronSchedule(cron="*/5 * * * *", timezone="Asia/Dacca")),
-    work_queue_name="scraper",
-    infrastructure=Process()
-)
-
-deployment.apply()
+if __name__ == "__main__":
+    top_news_scraper_flow()
