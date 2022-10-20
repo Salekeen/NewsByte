@@ -8,6 +8,7 @@ import csv
 from datetime import datetime
 import requests
 from prefect import task, flow
+from prefect.task_runners import SequentialTaskRunner
 
 
 @task(
@@ -63,7 +64,8 @@ def write_to_csv(url, filename):
 
 
 @flow(
-    name="All News Scraper"
+    name="All News Scraper",
+    task_runner=SequentialTaskRunner()
 )
 def all_news_scraper_flow():
     all_news_urls = list(get_all_news_urls())
