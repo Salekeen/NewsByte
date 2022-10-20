@@ -3,7 +3,7 @@
 
 # importing dependencies
 from prefect.infrastructure.process import Process
-from urllib.request import urlopen
+import requests
 from bs4 import BeautifulSoup
 from getData import get_data
 import csv
@@ -25,8 +25,8 @@ def get_all_news_urls():
         a set of all news artcles of the current day
     """
 
-    html = urlopen('https://www.thedailystar.net/todays-news')
-    bs = BeautifulSoup(html, 'html.parser')
+    html = requests.get('https://www.thedailystar.net/todays-news')
+    bs = BeautifulSoup(html.content, 'html.parser')
     all_news_urls = set()
     table_data = bs.find_all('tr')
     for data in table_data:
@@ -53,8 +53,8 @@ def get_top_news_urls(all_news_urls):
     """
 
     top_news_urls = set()
-    html = urlopen('https://www.thedailystar.net/top-news')
-    bs = BeautifulSoup(html, 'html.parser')
+    html = requests.get('https://www.thedailystar.net/top-news')
+    bs = BeautifulSoup(html.content, 'html.parser')
     for link in bs.findAll('a'):
         if 'href' in link.attrs:
             if link.attrs['href'] in all_news_urls:

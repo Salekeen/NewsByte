@@ -2,11 +2,11 @@
 """
 
 # importing dependencies
-from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from getData import get_data
 import csv
 from datetime import datetime
+import requests
 from prefect import task, flow
 
 
@@ -23,8 +23,8 @@ def get_all_news_urls():
         a set of all news artcles of the current day
     """
 
-    html = urlopen('https://www.thedailystar.net/todays-news')
-    bs = BeautifulSoup(html, 'html.parser')
+    html = requests.get('https://www.thedailystar.net/todays-news')
+    bs = BeautifulSoup(html.content, 'html.parser')
     all_news_urls = set()
     table_data = bs.find_all('tr')
     for data in table_data:
