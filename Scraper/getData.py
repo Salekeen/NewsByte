@@ -2,8 +2,8 @@
 """
 
 # Importing dependencies
-from urllib.request import urlopen
 from bs4 import BeautifulSoup
+import requests
 
 
 def get_data(url):
@@ -23,8 +23,8 @@ def get_data(url):
     """
 
     article = ""
-    html = urlopen(url)
-    bs = BeautifulSoup(html, 'html.parser')
+    html = requests.get(url)
+    bs = BeautifulSoup(html.content, 'html.parser')
     article_body = bs.find('article')
     paragraphs = article_body.find_all('p')
 
