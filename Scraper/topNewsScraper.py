@@ -7,9 +7,9 @@ import requests
 from bs4 import BeautifulSoup
 from getData import get_data
 import csv
-from datetime import datetime, timedelta
+from datetime import datetime
 from prefect import task, flow
-from prefect.orion.schemas.schedules import CronSchedule
+from prefect.task_runners import SequentialTaskRunner
 
 
 @task(
@@ -93,7 +93,8 @@ def write_to_csv(url, filename):
 
 
 @flow(
-    name="Top News Scraper"
+    name="Top News Scraper",
+    task_runner=SequentialTaskRunner()
 )
 def top_news_scraper_flow():
 
