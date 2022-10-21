@@ -4,9 +4,16 @@ import pandas as pd
 from textacy.extract import keyterms as kt
 from sklearn.feature_extraction.text import CountVectorizer
 
+from prefect import task, flow
+from prefect.task_runners import SequentialTaskRunner
+
 from load_data import get_df
 
 
+@task(
+    retries=2,
+    retry_delay_seconds=60
+)
 def get_dataframe():
 
     df = get_df()
@@ -14,6 +21,10 @@ def get_dataframe():
     return df
 
 
+@task(
+    retries=2,
+    retry_delay_seconds=60
+)
 def generate_corpus(df):
 
     corpus = []
@@ -33,6 +44,10 @@ def generate_corpus(df):
     return corpus
 
 
+@task(
+    retries=2,
+    retry_delay_seconds=60
+)
 def get_top_n_words(corpus, n=None):
 
     vec = CountVectorizer().fit(corpus)
@@ -49,8 +64,12 @@ def get_top_n_words(corpus, n=None):
     return words_freq[:n]
 
 
+@task(
+    retries=2,
+    retry_delay_seconds=60
+)
 def get_top_n2_words(corpus, n=None):
-    
+
     vec1 = CountVectorizer(ngram_range=(2, 2),
                            max_features=2000).fit(corpus)
     bag_of_words = vec1.transform(corpus)
@@ -62,6 +81,10 @@ def get_top_n2_words(corpus, n=None):
     return words_freq[:n]
 
 
+@task(
+    retries=2,
+    retry_delay_seconds=60
+)
 def get_top_n3_words(corpus, n=None):
 
     vec1 = CountVectorizer(ngram_range=(3, 3),
@@ -75,7 +98,11 @@ def get_top_n3_words(corpus, n=None):
     return words_freq[:n]
 
 
-if __name__ == "__main__":
+@flow(
+    name="articlesKPE",
+    task_runner=SequentialTaskRunner()
+)
+def articlesKPE():
     df = get_dataframe()
     corpus = generate_corpus(df)
     top_words = get_top_n_words(corpus, n=20)
@@ -85,3 +112,7 @@ if __name__ == "__main__":
     print(top_words)
     print(top2_words)
     print(top3_words)
+
+
+if __name__ == "__main__":
+    articlesKPE()
