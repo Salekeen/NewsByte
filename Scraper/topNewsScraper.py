@@ -2,7 +2,6 @@
 """
 
 # importing dependencies
-from prefect.infrastructure.process import Process
 import requests
 from bs4 import BeautifulSoup
 from getData import get_data
