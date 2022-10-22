@@ -17,11 +17,16 @@ def connect():
         
 	# execute a statement
         print('PostgreSQL database version:')
-        cur.execute('SELECT * FROM all_articles')
+        cur.execute(
+            """
+            SELECT * FROM all_articles
+            WHERE date_published = '2022-10-21'
+            """
+        )
 
         # display the PostgreSQL database server version
         article = cur.fetchone()
-        print(article[1])
+        print(article[2])
        
 	# close the communication with the PostgreSQL
         cur.close()
