@@ -10,3 +10,4 @@ sumy==0.10.0
 beautifulsoup4==4.11.1
 prefect==2.6.1
 psycopg2==2.9.4
+sqlalchemy==1.4.42
