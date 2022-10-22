@@ -7,7 +7,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from prefect import task, flow
 from prefect.task_runners import SequentialTaskRunner
 
-from load_data import get_df
+from load_data import get_last_7_days_data
 
 
 @task(
@@ -16,7 +16,7 @@ from load_data import get_df
 )
 def get_dataframe():
 
-    df = get_df()
+    df = get_last_7_days_data()
     df.reset_index(inplace=True)
     return df
 
