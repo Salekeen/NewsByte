@@ -1,33 +1,33 @@
+from sqlalchemy import and_, or_, not_
 import pandas as pd
-from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timedelta
+from sqlalchemy.sql import select
+from sqlalchemy import create_engine, MetaData, Table
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 
-path = Path("./Scraper/Data/all_news")
+# Establishing Setup
+engine = create_engine(
+    f"postgresql+psycopg2://{os.environ['dbUSERNAME']}:{os.environ['dbPASSWORD']}@localhost:5432/ScrapedData"
+)
+metadata = MetaData(engine)
+all_articles = Table('all_articles', metadata, autoload=True)
+top_articles = Table('top_articles', metadata, autoload=True)
+connection = engine.connect()
 
 
-def get_last_7_days_data():
-
-    df = pd.DataFrame()
-
-    for f in path.iterdir():
-
-        year, month, day = f.stem.split('_')[2:5]
-        date = datetime(int(year), int(month), int(day))
-        now = datetime.now()
-
-        if abs((date - now).days) <= 8:
-
-            print(date.day, now.day)
-            print(abs((date - now).days))
-            try:
-                temp_df = pd.read_csv(f, encoding="utf8")
-            except UnicodeDecodeError:
-                temp_df = pd.read_csv(f, encoding="'windows-1252")
-
-            temp_df['date_published'] = date
-
-            # adding a single file dataframe to the main dataframe
-            df = pd.concat([df, temp_df], axis=0)
-
+def get_last_n_days_data(n=7):
+    
+    todays_date = datetime.today()
+    seventh_previous_days_date = (datetime.today() - timedelta(days=n))
+    s = select([all_articles]).where(
+        and_(
+            all_articles.c.date_published <= todays_date,
+            all_articles.c.date_published >= seventh_previous_days_date
+        )
+    )
+    rp = connection.execute(s)
+    df = pd.DataFrame(rp.fetchall())
     return df

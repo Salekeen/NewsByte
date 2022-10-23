@@ -7,7 +7,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from prefect import task, flow
 from prefect.task_runners import SequentialTaskRunner
 
-from load_data import get_last_7_days_data
+from load_data import get_last_n_days_data
 
 
 @task(
@@ -16,7 +16,7 @@ from load_data import get_last_7_days_data
 )
 def get_dataframe():
 
-    df = get_last_7_days_data()
+    df = get_last_n_days_data(n=7)
     df.reset_index(inplace=True)
     return df
 
@@ -30,7 +30,7 @@ def generate_corpus(df):
     corpus = []
     en = textacy.load_spacy_lang("en_core_web_sm", disable=("parser",))
     for index in range(len(df)):
-        doc = textacy.make_spacy_doc(df['Headline'][index], lang=en)
+        doc = textacy.make_spacy_doc(df['headline'][index], lang=en)
         output = kt.textrank(
             doc,
             normalize="lemma",
