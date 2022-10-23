@@ -1,6 +1,6 @@
 Database: ScrapedData
 
-Table 1: all_articles
+Table 1: articles
 Contains attributes regarding a single article.
 
 - article_id: Integer, Primary Key, autoincrement
