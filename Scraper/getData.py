@@ -6,30 +6,21 @@ from bs4 import BeautifulSoup
 import requests
 
 
-def get_data(url):
-    """given an url of a news article of returns the article body and headline
+def get_data(urls):
+    article_bodies = []
+    headlines = []
+    for i in range(len(urls)):
+        article = ""
+        html = requests.get("https://www.thedailystar.net{}".format(urls[i]))
+        bs = BeautifulSoup(html.content, 'html.parser')
+        article_body = bs.find('article')
+        paragraphs = article_body.find_all('p')
 
-    Parameters
-    ----------
-    url : str
-        The url of the desired article
-    
-    Returns
-    -------
-    article : str
-        the article body
-    headline : str
-        the headline of the article
-    """
+        for paragraph in paragraphs:
+            article += paragraph.get_text()
+        headline = article_body.find('h1', {'itemprop': 'headline'}).get_text()
 
-    article = ""
-    html = requests.get(url)
-    bs = BeautifulSoup(html.content, 'html.parser')
-    article_body = bs.find('article')
-    paragraphs = article_body.find_all('p')
+        article_bodies.append(article)
+        headlines.append(headline)
 
-    for paragraph in paragraphs:
-        article += paragraph.get_text()
-
-    headline = article_body.find('h1', {'itemprop': 'headline'}).get_text()
-    return article, headline
+    return article_bodies, headlines
