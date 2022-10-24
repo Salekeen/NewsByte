@@ -29,4 +29,5 @@ def get_last_n_days_data(n=7):
     )
     rp = connection.execute(s)
     df = pd.DataFrame(rp.fetchall())
+    connection.close()
     return df

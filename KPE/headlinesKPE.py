@@ -1,4 +1,7 @@
 # Installing dependencies
+import json
+from numpyencoder import NumpyEncoder
+
 import textacy
 import pandas as pd
 from textacy.extract import keyterms as kt
@@ -8,6 +11,7 @@ from prefect import task, flow
 from prefect.task_runners import SequentialTaskRunner
 
 from load_data import get_last_n_days_data
+from write_to_database import write_to_database
 
 
 @task(
@@ -103,16 +107,18 @@ def get_top_n3_words(corpus, n=None):
     task_runner=SequentialTaskRunner()
 )
 def headlinesKPE():
+    kpe = {}
+
     df = get_dataframe()
     corpus = generate_corpus(df)
-    top_words = get_top_n_words(corpus, n=20)
-    top2_words = get_top_n2_words(corpus, n=20)
-    top3_words = get_top_n3_words(corpus, n=20)
-
-    print(top_words)
-    print(top2_words)
-    print(top3_words)
+    kpe["top_unigrams"] = get_top_n_words(corpus, n=20)
+    kpe["top_bigrams"] = get_top_n2_words(corpus, n=20)
+    kpe["top_trigrams"] = get_top_n3_words(corpus, n=20)
+    # using NumpyEncoder as json doesnt support numpy encoding by default
+    data = json.dumps(kpe, cls=NumpyEncoder)
+    return data
 
 
 if __name__ == "__main__":
-    headlinesKPE()
+    data = headlinesKPE()
+    write_to_database(data)
