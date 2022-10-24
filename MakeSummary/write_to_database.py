@@ -1,36 +1,29 @@
-from sqlalchemy import and_, or_, not_
+from sqlite3 import IntegrityError
+from sqlalchemy import and_
 from sqlalchemy import insert
-from sqlalchemy.sql import select
 from sqlalchemy import create_engine, MetaData, Table
-
-from summerizer import make_summery
+from sqlalchemy.exc import IntegrityError
 
 import os
 from dotenv import load_dotenv
 load_dotenv()
 
-make_summery()
 
-
-def write_to_database(summeries, urls, headlines, date_published):
+def write_to_database(article_id, summeries):
     # Establishing Setup
     engine = create_engine(
-        f"postgresql+psycopg2://{os.environ['dbUSERNAME']}:{os.environ['dbPASSWORD']}@localhost:5432/ScrapedData"
+        f"postgresql+psycopg2://{os.environ['dbUSERNAME']}:{os.environ['dbPASSWORD']}@localhost:5432/Scratch"
     )
     metadata = MetaData(engine)
     summery_table = Table('summeries', metadata, autoload=True)
     connection = engine.connect()
 
     for i in range(len(summeries)):
-        ins = insert(summery_table).values(
-            url=urls[i],
-            headline=headlines[i],
-            date_published=date_published[i],
-            summery=summeries[i]
-        )
-        connection.execute(ins)
-
-
-if __name__ == "__main__":
-    summeries, urls, headlines, date_published = make_summery()
-    write_to_database(summeries, urls, headlines, date_published)
+        try:
+            ins = insert(summery_table).values(
+                article_id=int(article_id[i]),
+                summery=summeries[i],
+            )
+            connection.execute(ins)
+        except IntegrityError:
+            pass
