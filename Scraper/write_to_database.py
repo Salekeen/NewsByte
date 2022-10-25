@@ -28,3 +28,4 @@ def write_to_database(headlines, article_bodies, urls):
             connection.execute(ins)
         except IntegrityError:
             pass
+    connection.close()
