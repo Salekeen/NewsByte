@@ -1,3 +1,4 @@
+from prefect import task
 from sqlalchemy import and_, or_, not_
 import pandas as pd
 from datetime import datetime, timedelta

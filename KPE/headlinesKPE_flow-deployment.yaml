@@ -1,0 +1,40 @@
+###
+### A complete description of a Prefect Deployment for flow 'headlinesKPE'
+###
+name: headlinesKPE-deployment
+description: null
+version: 32362a6d5231817fd4fdba5f4081d1e7
+# The work queue that will handle this deployment's runs
+work_queue_name: test
+tags: []
+parameters: {}
+schedule: null
+infra_overrides:
+  env:
+    PREFECT_LOGGING_LEVEL: DEBUG
+    dbPASSWORD: TooL4LIFE
+    dbUSERNAME: postgres
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  stream_output: true
+  block_type_slug: process
+  _block_type_slug: process
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: headlinesKPE
+manifest_path: null
+storage: null
+path: E:\ML\NewsByte\KPE
+entrypoint: headlinesKPE.py:headlinesKPE_flow
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties: {}
+  required: null
+  definitions: null

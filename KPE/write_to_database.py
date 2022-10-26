@@ -3,13 +3,17 @@ from sqlite3 import IntegrityError
 from sqlalchemy import and_
 from sqlalchemy import insert
 from sqlalchemy import create_engine, MetaData, Table
-from sqlalchemy.exc import IntegrityError
 
 import os
 from dotenv import load_dotenv
 load_dotenv()
 
+from prefect import task 
 
+@task(
+    retries=2,
+    retry_delay_seconds=60
+)
 def write_to_database(kpe):
     # Establishing Setup
     engine = create_engine(

@@ -25,10 +25,6 @@ def get_dataframe():
     return df
 
 
-@task(
-    retries=2,
-    retry_delay_seconds=60
-)
 def generate_corpus(df):
 
     corpus = []
@@ -48,10 +44,6 @@ def generate_corpus(df):
     return corpus
 
 
-@task(
-    retries=2,
-    retry_delay_seconds=60
-)
 def get_top_n_words(corpus, n=None):
 
     vec = CountVectorizer().fit(corpus)
@@ -68,10 +60,6 @@ def get_top_n_words(corpus, n=None):
     return words_freq[:n]
 
 
-@task(
-    retries=2,
-    retry_delay_seconds=60
-)
 def get_top_n2_words(corpus, n=None):
 
     vec1 = CountVectorizer(ngram_range=(2, 2),
@@ -85,10 +73,6 @@ def get_top_n2_words(corpus, n=None):
     return words_freq[:n]
 
 
-@task(
-    retries=2,
-    retry_delay_seconds=60
-)
 def get_top_n3_words(corpus, n=None):
 
     vec1 = CountVectorizer(ngram_range=(3, 3),
@@ -102,15 +86,14 @@ def get_top_n3_words(corpus, n=None):
     return words_freq[:n]
 
 
-@flow(
-    name="headlinesKPE",
-    task_runner=SequentialTaskRunner()
+@task(
+    retries=2,
+    retry_delay_seconds=60
 )
-def headlinesKPE():
+def headlinesKPE(input_df):
     kpe = {}
 
-    df = get_dataframe()
-    corpus = generate_corpus(df)
+    corpus = generate_corpus(input_df)
     kpe["top_unigrams"] = get_top_n_words(corpus, n=20)
     kpe["top_bigrams"] = get_top_n2_words(corpus, n=20)
     kpe["top_trigrams"] = get_top_n3_words(corpus, n=20)
@@ -119,6 +102,15 @@ def headlinesKPE():
     return data
 
 
+@flow(
+    name="headlinesKPE",
+    task_runner=SequentialTaskRunner()
+)
+def headlinesKPE_flow():
+    input_df = get_dataframe()
+    data = headlinesKPE(input_df)
+    write_to_database.submit(data)
+
+
 if __name__ == "__main__":
-    data = headlinesKPE()
-    write_to_database(data)
+    headlinesKPE_flow()
