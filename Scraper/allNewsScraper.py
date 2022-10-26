@@ -22,7 +22,7 @@ def get_all_news_urls():
     return all_news_urls
 
 @flow(
-    name="Top News Scraper",
+    name="All News Scraper",
     task_runner=SequentialTaskRunner()
 )
 def all_news_scraper_flow():

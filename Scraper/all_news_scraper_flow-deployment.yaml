@@ -1,0 +1,40 @@
+###
+### A complete description of a Prefect Deployment for flow 'All News Scraper'
+###
+name: test-deploy-scraper
+description: null
+version: 5d27d43a77a8dac5ef7e946e478736ae
+# The work queue that will handle this deployment's runs
+work_queue_name: test
+tags: []
+parameters: {}
+schedule: null
+infra_overrides:
+  env:
+    PREFECT_LOGGING_LEVEL: DEBUG
+    dbPASSWORD: TooL4LIFE
+    dbUSERNAME: postgres
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  stream_output: true
+  block_type_slug: process
+  _block_type_slug: process
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: All News Scraper
+manifest_path: null
+storage: null
+path: E:\ML\NewsByte\Scraper
+entrypoint: allNewsScraper.py:all_news_scraper_flow
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties: {}
+  required: null
+  definitions: null
