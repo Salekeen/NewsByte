@@ -7,17 +7,28 @@ from sumy.nlp.stemmers import Stemmer
 from load_data import get_last_n_days_data
 from write_to_database import write_to_database
 
+from prefect import task, flow
+from prefect.task_runners import SequentialTaskRunner
+
+
+@task(
+    retries=2,
+    retry_delay_seconds=60
+)
 def get_data():
 
     data = get_last_n_days_data(n=1)
     print(data.shape)
     article_id = data['article_id']
     article_body = data['article_body']
-    return article_id,article_body
+    return article_id, article_body
 
 
-def make_summery():
-    article_id,article_body = get_data()
+@task(
+    retries=2,
+    retry_delay_seconds=60
+)
+def make_summery(article_id, article_body):
     stemmer = Stemmer("english")
     summerizer = Summarizer(stemmer)
     summeries = []
@@ -27,9 +38,18 @@ def make_summery():
         for sentence in summerizer(parser.document, 2):
             summery += f"{sentence}\n"
         summeries.append(summery)
-    return article_id,summeries
+    return article_id, summeries
+
+
+@flow(
+    name="Summerizer Flow",
+    task_runner=SequentialTaskRunner()
+)
+def summerizer_flow():
+    article_id, article_body = get_data()
+    article_id, summeries = make_summery(article_id, article_body)
+    write_to_database(article_id, summeries)
 
 
 if __name__ == "__main__":
-    article_id,summeries = make_summery()
-    write_to_database(article_id,summeries)
+    summerizer_flow()

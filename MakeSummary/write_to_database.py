@@ -4,11 +4,17 @@ from sqlalchemy import insert
 from sqlalchemy import create_engine, MetaData, Table
 from sqlalchemy.exc import IntegrityError
 
+from prefect import task
+
 import os
 from dotenv import load_dotenv
 load_dotenv()
 
 
+@task(
+    retries=2,
+    retry_delay_seconds=60
+)
 def write_to_database(article_id, summeries):
     # Establishing Setup
     engine = create_engine(

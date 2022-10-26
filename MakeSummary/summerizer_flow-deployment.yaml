@@ -1,0 +1,40 @@
+###
+### A complete description of a Prefect Deployment for flow 'Summerizer Flow'
+###
+name: summerizer-deploy
+description: null
+version: fe1ce1f03344adf0235d9bd8678654f8
+# The work queue that will handle this deployment's runs
+work_queue_name: test
+tags: []
+parameters: {}
+schedule: null
+infra_overrides:
+  env:
+    PREFECT_LOGGING_LEVEL: DEBUG
+    dbPASSWORD: TooL4LIFE
+    dbUSERNAME: postgres
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  stream_output: true
+  block_type_slug: process
+  _block_type_slug: process
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: Summerizer Flow
+manifest_path: null
+storage: null
+path: E:\ML\NewsByte\MakeSummary
+entrypoint: summerizer.py:summerizer_flow
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties: {}
+  required: null
+  definitions: null
