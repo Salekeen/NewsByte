@@ -2,10 +2,16 @@
 """
 
 # Importing dependencies
+import http
 from bs4 import BeautifulSoup
 import requests
+from prefect import task
 
 
+@task(
+    retries=2,
+    retry_delay_seconds=60
+)
 def get_data(urls):
     article_bodies = []
     headlines = []
@@ -28,5 +34,7 @@ def get_data(urls):
             headlines.append(headline)
         except AttributeError:
             print(f"something wrong with this link: {urls[i]}")
+        except http.client.HTTPException as e:
+            print(e)
 
     return article_bodies, headlines
