@@ -6,6 +6,7 @@ import http
 from bs4 import BeautifulSoup
 import requests
 from prefect import task
+import time
 
 
 @task(
@@ -19,6 +20,7 @@ def get_data(urls):
     for i in range(len(urls)):
         try:
             article = ""
+            time.sleep(0.01)
             html = requests.get(
                 "https://www.thedailystar.net{}".format(urls[i]))
             bs = BeautifulSoup(html.content, 'html.parser')
