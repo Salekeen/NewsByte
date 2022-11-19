@@ -15,6 +15,13 @@ from prefect import task
     retry_delay_seconds=60
 )
 def write_to_database(kpe):
+    """
+    It takes a string, and writes it to a database
+    
+    Args:
+      kpe: the keyphrase
+    """
+    
     # Establishing Setup
     engine = create_engine(
         f"postgresql+psycopg2://{os.environ['dbUSERNAME']}:{os.environ['dbPASSWORD']}@localhost:5432/Scratch"

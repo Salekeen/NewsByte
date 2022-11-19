@@ -1,4 +1,9 @@
 # importing dependencies
+"""
+It gets all the news urls from the daily star website, gets the article bodies and headlines from
+those urls, and writes them to a database
+:return: A list of all the news urls
+"""
 from bs4 import BeautifulSoup
 from getData import get_data
 import requests
@@ -12,6 +17,13 @@ from prefect.task_runners import SequentialTaskRunner
     retry_delay_seconds=60
 )
 def get_all_news_urls():
+    """
+    It takes the html content of the url, parses it using BeautifulSoup, finds all the 'tr' tags, and
+    then finds all the 'a' tags inside the 'tr' tags, and returns the href attribute of the 'a' tags.
+    
+    Returns:
+      A set of all the news urls.
+    """
 
     html = requests.get('https://www.thedailystar.net/todays-news')
     bs = BeautifulSoup(html.content, 'html.parser')
@@ -26,6 +38,10 @@ def get_all_news_urls():
     task_runner=SequentialTaskRunner()
 )
 def all_news_scraper_flow():
+    """
+    It takes all the news urls, gets the article bodies and headlines, and writes them to the database
+    """
+    
     all_news_urls = list(get_all_news_urls())
     article_bodies,headlines = get_data(all_news_urls)
     write_to_database(headlines,article_bodies,all_news_urls)

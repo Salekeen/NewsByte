@@ -18,6 +18,15 @@ connection = engine.connect()
 
 
 def get_last_n_days_data(n=1):
+    """
+    It returns a dataframe of all the articles published in the last n days.
+    
+    Args:
+      n: number of days to go back. Defaults to 1
+    
+    Returns:
+      A dataframe with the article_id and article_body for all articles published in the last n days.
+    """
 
     todays_date = datetime.today()
     nth_days_date = (datetime.today() - timedelta(days=n))

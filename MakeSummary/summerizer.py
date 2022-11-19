@@ -16,6 +16,13 @@ from prefect.task_runners import SequentialTaskRunner
     retry_delay_seconds=60
 )
 def get_data():
+    """
+    It takes the last n days of data from the database and returns the article_id and article_body as
+    two separate lists
+    
+    Returns:
+      article_id and article_body
+    """
 
     data = get_last_n_days_data(n=1)
     print(data.shape)
@@ -29,6 +36,18 @@ def get_data():
     retry_delay_seconds=60
 )
 def make_summery(article_id, article_body):
+    """
+    It takes in a list of article_ids and a list of article_bodies and returns a list of article_ids and
+    a list of summeries.
+    
+    Args:
+      article_id: The id of the article
+      article_body: The text of the article
+    
+    Returns:
+      A tuple of article_id and summeries
+    """
+    
     stemmer = Stemmer("english")
     summerizer = Summarizer(stemmer)
     summeries = []
@@ -46,6 +65,10 @@ def make_summery(article_id, article_body):
     task_runner=SequentialTaskRunner()
 )
 def summerizer_flow():
+    """
+    It gets data, makes a summary, and writes it to a database
+    """
+    
     article_id, article_body = get_data()
     article_id, summeries = make_summery(article_id, article_body)
     write_to_database(article_id, summeries)

@@ -22,6 +22,15 @@ connection = engine.connect()
     retry_delay_seconds=60
 )
 def write_to_database(headlines, article_bodies, urls):
+    """
+    It writes the data to the database.
+    
+    Args:
+      headlines: a list of strings, each string is a headline
+      article_bodies: list of article bodies
+      urls: list of urls
+    """
+    
     for i in range(len(headlines)):
         try:
             ins = insert(article_table).values(

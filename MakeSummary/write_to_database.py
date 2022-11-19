@@ -16,6 +16,14 @@ load_dotenv()
     retry_delay_seconds=60
 )
 def write_to_database(article_id, summeries):
+    """
+    It takes in two lists, one of article_ids and one of summeries, and writes them to a database.
+    
+    Args:
+      article_id: A list of article ids
+      summeries: list of strings
+    """
+    
     # Establishing Setup
     engine = create_engine(
         f"postgresql+psycopg2://{os.environ['dbUSERNAME']}:{os.environ['dbPASSWORD']}@localhost:5432/Scratch"

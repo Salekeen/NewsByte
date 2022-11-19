@@ -14,6 +14,16 @@ import time
     retry_delay_seconds=60
 )
 def get_data(urls):
+    """
+    It takes a list of urls, and returns a list of article bodies and a list of headlines.
+    
+    Args:
+      urls: list of urls
+    
+    Returns:
+      article_bodies and headlines
+    """
+    
     article_bodies = []
     headlines = []
 

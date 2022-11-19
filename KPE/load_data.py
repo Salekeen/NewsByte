@@ -19,6 +19,17 @@ connection = engine.connect()
 
 
 def get_last_n_days_data(n=7):
+    """
+    It returns a dataframe of all the articles published in the last n days.
+    
+    Args:
+      n: number of days to go back. Defaults to 7
+    
+    Returns:
+      A dataframe with the columns:
+    ['id', 'title', 'url', 'date_published']
+    
+    """
 
     todays_date = datetime.today()
     seventh_previous_days_date = (datetime.today() - timedelta(days=n))
